@@ -1,13 +1,19 @@
+import 'package:control_gastos/utils/session_singleton.dart';
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Dashboard"),
+        child: Text('Hola! ${SessionSingleton.instance.email}'),
       ),
     );
   }

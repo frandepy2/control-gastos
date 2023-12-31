@@ -2,16 +2,17 @@ import 'package:control_gastos/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
 
+  final route = Routes();
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: Routes().routes,
+      routerConfig: route.routes,
       debugShowCheckedModeBanner: false,
     );
   }

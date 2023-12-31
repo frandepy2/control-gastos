@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:control_gastos/connection/models/connection_error.dart';
+import 'package:control_gastos/src/login/models/session_model.dart';
+import 'package:control_gastos/utils/helper/session_helper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_bloc.freezed.dart';
 part 'login_event.dart';
@@ -23,6 +26,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         try {
           UserCredential userCredential =
               await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+
+          SessionHelper().saveSession(SessionModel(
+            email: userCredential.user!.email,
+            uid: userCredential.user!.uid,
+            username: userCredential.additionalUserInfo!.username,
+          ));
 
           print("Inicio de sesion exitoso");
           print(userCredential.toString());

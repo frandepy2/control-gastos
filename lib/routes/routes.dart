@@ -1,6 +1,7 @@
 import 'package:control_gastos/src/dashboard/pages/dashboard.dart';
 import 'package:control_gastos/src/login/pages/login_page.dart';
 import 'package:control_gastos/src/splash/page/splash_page.dart';
+import 'package:control_gastos/utils/session_singleton.dart';
 import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
