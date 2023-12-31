@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "903759935760",
+    "project_id": "gastos-check",
+    "storage_bucket": "gastos-check.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903759935760:android:e510e8c5fc2e193c70cd95",
+        "android_client_info": {
+          "package_name": "com.example.control_gastos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk-TdIYAgUpiSdgiH_zo3mSbZJ0P9QsF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
