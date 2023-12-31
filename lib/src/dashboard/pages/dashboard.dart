@@ -13,7 +13,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Hola! ${SessionSingleton.instance.email}'),
+        child: Text('Hola desde el dashboard! ${SessionSingleton.instance.email}'),
       ),
     );
   }
