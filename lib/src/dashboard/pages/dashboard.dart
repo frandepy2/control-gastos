@@ -1,6 +1,9 @@
+import 'package:control_gastos/src/dashboard/models/transaction_model.dart';
+import 'package:control_gastos/utils/constants/icono_categoria.dart';
 import 'package:control_gastos/utils/session_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -12,6 +15,45 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    List<TransactionModel> transactions = [];
+
+    TransactionModel transaction1 = TransactionModel(
+      description: "La rochelle",
+      isOutgoing: true,
+      category: "Comida",
+      dateCreated: DateTime.now(),
+      amount: 30000,
+    );
+
+    TransactionModel transaction2 = TransactionModel(
+      description: "Ande",
+      isOutgoing: true,
+      category: "Vivienda",
+      dateCreated: DateTime.now().subtract(Duration(days: 5)),
+      amount: 200000,
+    );
+
+    TransactionModel transaction3 = TransactionModel(
+      description: "Super 6",
+      isOutgoing: true,
+      category: "Comida",
+      dateCreated: DateTime.now().subtract(Duration(days: 2)),
+      amount: 33000,
+    );
+
+    TransactionModel transaction4 = TransactionModel(
+      description: "Fortaleza",
+      isOutgoing: false,
+      category: "Inversiones",
+      dateCreated: DateTime.now().subtract(Duration(days: 2)),
+      amount: 1425000,
+    );
+
+    transactions.add(transaction1);
+    transactions.add(transaction2);
+    transactions.add(transaction3);
+    transactions.add(transaction4);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,7 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: 8),
             _buidInfoSection(),
             const SizedBox(height: 8),
-            _buildRecentTransactions(),
+            _buildRecentTransactions(transactions),
           ],
         ),
       ),
@@ -144,7 +186,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  _buildRecentTransactions() {
+  _buildRecentTransactions(List<TransactionModel> transactions) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -160,6 +202,67 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           const SizedBox(
             height: 8,
+          ),
+          SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.35,
+              child: ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: ((context, index) {
+                  return Card(
+                    elevation: 4,
+                    child: ListTile(
+                      leading: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(100.0),
+                        ),
+                        child: Icon(
+                          IconoCategoria.obtenerIconoCategoria(transactions[index].category!),
+                          color: Colors.white,
+                        ),
+                      ),
+                      title: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              transactions[index].description!,
+                              style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              DateFormat.yMMMMd('en_US').add_jm().format(transactions[index].dateCreated!),
+                              style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                                  color: Color.fromARGB(255, 133, 133, 133),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      trailing: Text(
+                        "${transactions[index].amount!} Gs.",
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: transactions[index].isOutgoing! ? Colors.red : Colors.green,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
           )
         ],
       ),
@@ -183,7 +286,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
-          elevation: 0,
+          elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           )),
