@@ -62,17 +62,21 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildWelcome(),
-            const SizedBox(height: 8),
-            _buidInfoSection(),
-            const SizedBox(height: 8),
-            _buildRecentTransactions(transactions),
-          ],
-        ),
+      body: _dashboard(transactions),
+    );
+  }
+
+  SafeArea _dashboard(List<TransactionModel> transactions) {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildWelcome(),
+          const SizedBox(height: 8),
+          _buidInfoSection(),
+          const SizedBox(height: 8),
+          _buildRecentTransactions(transactions),
+        ],
       ),
     );
   }
@@ -110,6 +114,11 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           width: 50,
           height: 50,
+          child: Center(
+              child: Icon(
+            Icons.add,
+            color: Colors.white,
+          )),
         ),
       ),
     );

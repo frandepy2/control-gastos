@@ -1,4 +1,4 @@
-import 'package:control_gastos/src/dashboard/pages/dashboard.dart';
+import 'package:control_gastos/src/dashboard/pages/navigator_page.dart';
 import 'package:control_gastos/src/login/pages/login_page.dart';
 import 'package:control_gastos/src/splash/page/splash_page.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +17,7 @@ class Routes {
       ),
       GoRoute(
         path: '/dashboard',
-        builder: (context, state) => const DashboardPage(),
+        builder: (context, state) => const NavigatorPage(),
       ),
     ],
   );
