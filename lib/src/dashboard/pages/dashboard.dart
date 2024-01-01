@@ -138,7 +138,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   Text(
-                    '${6}% del presupuesto. ${2000000} Gs.',
+                    '${state.percentage}% del presupuesto. ${state.budget!.toInt()} Gs.',
                     style: GoogleFonts.roboto(
                       color: Color.fromARGB(255, 147, 168, 243),
                       fontSize: 16,

@@ -1,3 +1,4 @@
+import 'package:control_gastos/src/dashboard/models/presupuesto_model.dart';
 import 'package:control_gastos/src/dashboard/models/transaction_model.dart';
 import 'package:control_gastos/utils/session_singleton.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
       try {
         await _getData(transactions, emit);
+      } catch (e) {
+        print(e);
+        print('Error al obtener los datos');
+        emit(state.copyWith(
+          isLoading: false,
+          transactions: transactions,
+        ));
+      }
+
+      //Procedemos a traer el presupuesto
+      try {
+        await _getPresupuesto(emit);
+        //Calculamos porcentaje de uso del presupuesto
+        await _setPorcentage(emit);
+        emit(state.copyWith(
+          isLoading: false,
+        ));
       } catch (e) {
         print(e);
         print('Error al obtener los datos');
@@ -59,7 +77,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     double currency = _calculateCurrency(transactions);
 
     emit(state.copyWith(
-      isLoading: false,
       transactions: transactions,
       currency: currency,
     ));
@@ -74,5 +91,37 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     });
 
     return negative;
+  }
+
+  _getPresupuesto(Emitter<DashboardState> emit) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference collection = firestore.collection('presupuestos');
+    QuerySnapshot querySnapshot = await collection.where('uid', isEqualTo: SessionSingleton.instance.uid).get();
+    querySnapshot.docs.forEach((DocumentSnapshot document) {
+      print('ID del documento: ${document.id}');
+      print('Datos: ${document.data()}');
+      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+      PresupuestoModel presupuesto = PresupuestoModel(
+        uuid: document.id,
+        uid: data["uid"],
+        presupuesto: data["presupuesto"]!.toDouble(),
+      );
+      emit(state.copyWith(
+        budget: presupuesto.presupuesto,
+      ));
+    });
+  }
+
+  _setPorcentage(Emitter<DashboardState> emit) async {
+    double presupuesto = state.budget ?? 0;
+
+    double porcentaje = 0;
+    if (presupuesto != 0 && state.currency != 0) {
+      porcentaje = state.currency! / presupuesto;
+    }
+    emit(state.copyWith(
+      percentage: (porcentaje * 100).toInt(),
+    ));
   }
 }

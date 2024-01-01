@@ -169,6 +169,7 @@ mixin _$DashboardState {
   bool? get isLoading => throw _privateConstructorUsedError;
   double? get currency => throw _privateConstructorUsedError;
   double? get budget => throw _privateConstructorUsedError;
+  int? get percentage => throw _privateConstructorUsedError;
   List<TransactionModel>? get transactions =>
       throw _privateConstructorUsedError;
 
@@ -187,6 +188,7 @@ abstract class $DashboardStateCopyWith<$Res> {
       {bool? isLoading,
       double? currency,
       double? budget,
+      int? percentage,
       List<TransactionModel>? transactions});
 }
 
@@ -206,6 +208,7 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
     Object? isLoading = freezed,
     Object? currency = freezed,
     Object? budget = freezed,
+    Object? percentage = freezed,
     Object? transactions = freezed,
   }) {
     return _then(_value.copyWith(
@@ -221,6 +224,10 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as double?,
+      percentage: freezed == percentage
+          ? _value.percentage
+          : percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       transactions: freezed == transactions
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -241,6 +248,7 @@ abstract class _$$DashboardStateImplCopyWith<$Res>
       {bool? isLoading,
       double? currency,
       double? budget,
+      int? percentage,
       List<TransactionModel>? transactions});
 }
 
@@ -258,6 +266,7 @@ class __$$DashboardStateImplCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? currency = freezed,
     Object? budget = freezed,
+    Object? percentage = freezed,
     Object? transactions = freezed,
   }) {
     return _then(_$DashboardStateImpl(
@@ -273,6 +282,10 @@ class __$$DashboardStateImplCopyWithImpl<$Res>
           ? _value.budget
           : budget // ignore: cast_nullable_to_non_nullable
               as double?,
+      percentage: freezed == percentage
+          ? _value.percentage
+          : percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       transactions: freezed == transactions
           ? _value._transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -288,6 +301,7 @@ class _$DashboardStateImpl implements _DashboardState {
       {this.isLoading,
       this.currency,
       this.budget,
+      this.percentage,
       final List<TransactionModel>? transactions})
       : _transactions = transactions;
 
@@ -297,6 +311,8 @@ class _$DashboardStateImpl implements _DashboardState {
   final double? currency;
   @override
   final double? budget;
+  @override
+  final int? percentage;
   final List<TransactionModel>? _transactions;
   @override
   List<TransactionModel>? get transactions {
@@ -309,7 +325,7 @@ class _$DashboardStateImpl implements _DashboardState {
 
   @override
   String toString() {
-    return 'DashboardState(isLoading: $isLoading, currency: $currency, budget: $budget, transactions: $transactions)';
+    return 'DashboardState(isLoading: $isLoading, currency: $currency, budget: $budget, percentage: $percentage, transactions: $transactions)';
   }
 
   @override
@@ -322,13 +338,15 @@ class _$DashboardStateImpl implements _DashboardState {
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
             (identical(other.budget, budget) || other.budget == budget) &&
+            (identical(other.percentage, percentage) ||
+                other.percentage == percentage) &&
             const DeepCollectionEquality()
                 .equals(other._transactions, _transactions));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, currency, budget,
-      const DeepCollectionEquality().hash(_transactions));
+      percentage, const DeepCollectionEquality().hash(_transactions));
 
   @JsonKey(ignore: true)
   @override
@@ -343,6 +361,7 @@ abstract class _DashboardState implements DashboardState {
       {final bool? isLoading,
       final double? currency,
       final double? budget,
+      final int? percentage,
       final List<TransactionModel>? transactions}) = _$DashboardStateImpl;
 
   @override
@@ -351,6 +370,8 @@ abstract class _DashboardState implements DashboardState {
   double? get currency;
   @override
   double? get budget;
+  @override
+  int? get percentage;
   @override
   List<TransactionModel>? get transactions;
   @override

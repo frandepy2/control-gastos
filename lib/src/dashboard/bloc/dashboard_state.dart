@@ -6,6 +6,7 @@ class DashboardState with _$DashboardState {
     bool? isLoading,
     double? currency,
     double? budget,
+    int? percentage,
     List<TransactionModel>? transactions,
   }) = _DashboardState;
   factory DashboardState.initial() => _DashboardState(
@@ -13,5 +14,6 @@ class DashboardState with _$DashboardState {
         currency: 0,
         budget: 0,
         transactions: null,
+        percentage: 0,
       );
 }
