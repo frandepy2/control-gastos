@@ -1,7 +1,9 @@
+import 'package:control_gastos/src/dashboard/bloc/dashboard_bloc.dart';
 import 'package:control_gastos/src/dashboard/models/transaction_model.dart';
 import 'package:control_gastos/utils/constants/icono_categoria.dart';
 import 'package:control_gastos/utils/session_singleton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -15,73 +17,48 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-    List<TransactionModel> transactions = [];
-
-    TransactionModel transaction1 = TransactionModel(
-      description: "La rochelle",
-      isOutgoing: true,
-      category: "Comida",
-      dateCreated: DateTime.now(),
-      amount: 30000,
-    );
-
-    TransactionModel transaction2 = TransactionModel(
-      description: "Ande",
-      isOutgoing: true,
-      category: "Vivienda",
-      dateCreated: DateTime.now().subtract(Duration(days: 5)),
-      amount: 200000,
-    );
-
-    TransactionModel transaction3 = TransactionModel(
-      description: "Super 6",
-      isOutgoing: true,
-      category: "Comida",
-      dateCreated: DateTime.now().subtract(Duration(days: 2)),
-      amount: 33000,
-    );
-
-    TransactionModel transaction4 = TransactionModel(
-      description: "Fortaleza",
-      isOutgoing: false,
-      category: "Inversiones",
-      dateCreated: DateTime.now().subtract(Duration(days: 2)),
-      amount: 1425000,
-    );
-
-    transactions.add(transaction1);
-    transactions.add(transaction2);
-    transactions.add(transaction3);
-    transactions.add(transaction4);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Gastos Check",
-          style: GoogleFonts.lato(),
-        ),
-        centerTitle: true,
+    return BlocProvider(
+      create: (context) => DashboardBloc()..add(DashboardEvent.started()),
+      child: BlocConsumer<DashboardBloc, DashboardState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "Gastos Check",
+                style: GoogleFonts.lato(),
+              ),
+              centerTitle: true,
+            ),
+            body: state.isLoading!
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.indigo,
+                    ),
+                  )
+                : _dashboard(state.transactions ?? [], state),
+          );
+        },
       ),
-      body: _dashboard(transactions),
     );
   }
 
-  SafeArea _dashboard(List<TransactionModel> transactions) {
+  SafeArea _dashboard(List<TransactionModel> transactions, DashboardState state) {
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildWelcome(),
+          _buildWelcome(state),
           const SizedBox(height: 8),
-          _buidInfoSection(),
+          _buidInfoSection(state),
           const SizedBox(height: 8),
-          _buildRecentTransactions(transactions),
+          _buildRecentTransactions(transactions, state),
         ],
       ),
     );
   }
 
-  Widget _buildWelcome() {
+  Widget _buildWelcome(DashboardState state) {
     return Container(
       child: ListTile(
         title: Column(
@@ -107,24 +84,29 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ],
         ),
-        trailing: Container(
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(8.0),
+        trailing: GestureDetector(
+          onTap: () {
+            print("TODO: Agregar nuevo item");
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: 50,
+            height: 50,
+            child: Center(
+                child: Icon(
+              Icons.add,
+              color: Colors.white,
+            )),
           ),
-          width: 50,
-          height: 50,
-          child: Center(
-              child: Icon(
-            Icons.add,
-            color: Colors.white,
-          )),
         ),
       ),
     );
   }
 
-  _buidInfoSection() {
+  _buidInfoSection(DashboardState state) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -148,7 +130,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Column(
                 children: [
                   Text(
-                    "Gs.${120000}",
+                    "Gs.${state.currency!.toInt()}",
                     style: GoogleFonts.roboto(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -195,7 +177,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  _buildRecentTransactions(List<TransactionModel> transactions) {
+  _buildRecentTransactions(List<TransactionModel> transactions, DashboardState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -258,7 +240,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       trailing: Text(
-                        "${transactions[index].amount!} Gs.",
+                        "${transactions[index].amount!.toInt()} Gs.",
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.bold,

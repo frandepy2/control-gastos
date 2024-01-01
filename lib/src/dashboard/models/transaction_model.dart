@@ -1,4 +1,6 @@
 class TransactionModel {
+  String? _uuid;
+  String? _uid;
   String? _description;
   bool? _isOutgoing;
   String? _category;
@@ -10,6 +12,8 @@ class TransactionModel {
   String? get category => _category;
   DateTime? get dateCreated => _dateCreated;
   double? get amount => _amount;
+  String? get uid => _uid;
+  String? get uuid => _uuid;
 
   TransactionModel({
     String? description,
@@ -17,12 +21,16 @@ class TransactionModel {
     String? category,
     DateTime? dateCreated,
     double? amount,
+    String? uid,
+    String? uuid,
   }) {
     _description = description;
     _isOutgoing = isOutgoing;
     _category = category;
     _dateCreated = dateCreated;
     _amount = amount;
+    _uid = uid;
+    _uuid = uuid;
   }
 
   TransactionModel.fromJson(dynamic json) {
@@ -31,6 +39,8 @@ class TransactionModel {
     _category = json["category"];
     _dateCreated = DateTime.parse(json["dateCreated"]);
     _amount = json["amount"];
+    _uid = json["uid"];
+    _uuid = json["uuid"];
   }
 
   Future<Map<String, dynamic>> toJson() async {
@@ -40,6 +50,8 @@ class TransactionModel {
     json["category"] = _category;
     json["dateCreated"] = _dateCreated;
     json["amount"] = _amount;
+    json["uid"] = _uid;
+    json["uuid"] = _uuid;
 
     return json;
   }

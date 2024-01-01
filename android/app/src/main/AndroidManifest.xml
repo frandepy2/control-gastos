@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.control_gastos">
    <application
+        android:enableOnBackInvokedCallback="true"
         android:label="control_gastos"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
